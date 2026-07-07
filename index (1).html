@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Balajothi K — VLSI & FPGA Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050a18;
+  --bg2:#0a1228;
+  --blue:#3b82f6;
+  --teal:#14b8a6;
+  --indigo:#6366f1;
+  --purple:#8b5cf6;
+  --text:#e2e8f0;
+  --text2:#94a3b8;
+  --border:rgba(59,130,246,0.2);
+  --glow:0 0 20px rgba(59,130,246,0.4);
+  --glow2:0 0 30px rgba(20,184,166,0.3);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:var(--blue) var(--bg)}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--blue);border-radius:2px}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;overflow-x:hidden}
+
+/* PRELOADER */
+#preloader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px}
+.pre-chip{width:80px;height:80px;position:relative;animation:chipSpin 2s linear infinite}
+.pre-chip svg{width:100%;height:100%}
+.pre-text{font-family:'Fira Code',monospace;color:var(--blue);font-size:13px;letter-spacing:3px;animation:pulse 1s ease infinite}
+.pre-bar{width:200px;height:2px;background:rgba(59,130,246,0.2);border-radius:1px;overflow:hidden}
+.pre-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:1px;animation:preLoad 2.5s ease forwards}
+@keyframes preLoad{0%{width:0%}100%{width:100%}}
+@keyframes chipSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* SCROLL PROGRESS */
+#progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--teal),var(--indigo));z-index:999;width:0%;transition:width 0.1s}
+
+/* NAVBAR */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 5%;display:flex;align-items:center;justify-content:space-between;transition:all 0.4s}
+nav.scrolled{background:rgba(5,10,24,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Fira Code',monospace;font-size:18px;color:var(--blue);font-weight:500}
+.logo span{color:var(--teal)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:13px;letter-spacing:1px;text-transform:uppercase;transition:color 0.3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--blue);transition:width 0.3s}
+.nav-links a:hover{color:var(--blue)}
+.nav-links a:hover::after{width:100%}
+.nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.nav-toggle span{width:24px;height:1.5px;background:var(--blue);transition:all 0.3s}
+
+/* HERO */
+#hero{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden}
+#waveCanvas{position:absolute;inset:0;z-index:0}
+#particleCanvas{position:absolute;inset:0;z-index:1;pointer-events:none}
+.circuit-bg{position:absolute;inset:0;z-index:0;opacity:0.04;background-image:
+  linear-gradient(var(--blue) 1px,transparent 1px),
+  linear-gradient(90deg,var(--blue) 1px,transparent 1px);
+  background-size:60px 60px;animation:circuitMove 20s linear infinite}
+@keyframes circuitMove{0%{background-position:0 0}100%{background-position:60px 60px}}
+
+.hero-content{position:relative;z-index:10;width:100%;max-width:1200px;margin:0 auto;padding:0 5%;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:60px;padding-top:80px}
+.hero-left{}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);border-radius:20px;padding:6px 16px;font-family:'Fira Code',monospace;font-size:11px;color:var(--blue);margin-bottom:24px;letter-spacing:1px}
+.hero-badge::before{content:'';width:6px;height:6px;background:var(--teal);border-radius:50%;animation:blink 1.5s ease infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+h1.hero-name{font-size:clamp(36px,5vw,64px);line-height:1.1;font-weight:700;margin-bottom:8px}
+h1.hero-name .first{color:var(--text)}
+h1.hero-name .last{color:var(--blue);text-shadow:var(--glow)}
+.hero-title{font-family:'Fira Code',monospace;font-size:14px;color:var(--teal);margin-bottom:20px;letter-spacing:2px}
+.hero-desc{color:var(--text2);font-size:15px;line-height:1.7;max-width:480px;margin-bottom:32px}
+.hero-counters{display:flex;gap:32px;margin-bottom:36px}
+.counter-item{text-align:center}
+.counter-num{font-size:28px;font-weight:700;color:var(--blue);font-family:'Fira Code',monospace;line-height:1}
+.counter-label{font-size:11px;color:var(--text2);letter-spacing:1px;margin-top:4px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--indigo));color:#fff;padding:12px 28px;border:none;border-radius:6px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.3s;letter-spacing:0.5px}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(59,130,246,0.4)}
+.btn-outline{background:transparent;color:var(--blue);padding:12px 28px;border:1px solid var(--blue);border-radius:6px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.3s;letter-spacing:0.5px}
+.btn-outline:hover{background:rgba(59,130,246,0.1);transform:translateY(-2px)}
+.btn-teal{background:linear-gradient(135deg,var(--teal),var(--blue));color:#fff;padding:12px 28px;border:none;border-radius:6px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.3s}
+.btn-teal:hover{transform:translateY(-2px);box-shadow:var(--glow2)}
+
+/* PROFILE */
+.hero-right{display:flex;justify-content:center;align-items:center;position:relative}
+.profile-wrap{position:relative;width:280px;height:280px}
+.orbit{position:absolute;border-radius:50%;border:1px dashed;top:50%;left:50%;transform:translate(-50%,-50%)}
+.orbit-1{width:340px;height:340px;border-color:rgba(59,130,246,0.2);animation:orbitSpin 12s linear infinite}
+.orbit-2{width:400px;height:400px;border-color:rgba(20,184,166,0.15);animation:orbitSpin 20s linear infinite reverse}
+.orbit-3{width:460px;height:460px;border-color:rgba(99,102,241,0.1);animation:orbitSpin 30s linear infinite}
+@keyframes orbitSpin{0%{transform:translate(-50%,-50%) rotate(0deg)}100%{transform:translate(-50%,-50%) rotate(360deg)}}
+.orbit-dot{position:absolute;width:8px;height:8px;border-radius:50%;top:0;left:50%;transform:translate(-50%,-50%)}
+.orbit-dot.blue{background:var(--blue);box-shadow:0 0 10px var(--blue)}
+.orbit-dot.teal{background:var(--teal);box-shadow:0 0 10px var(--teal)}
+.orbit-dot.indigo{background:var(--indigo);box-shadow:0 0 10px var(--indigo)}
+.profile-circle{width:220px;height:220px;border-radius:50%;overflow:hidden;border:2px solid var(--blue);box-shadow:0 0 40px rgba(59,130,246,0.3),0 0 80px rgba(59,130,246,0.1);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+.profile-circle img{width:100%;height:100%;object-fit:cover;object-position:center top}
+
+/* SECTION COMMON */
+section{padding:100px 5%;max-width:1200px;margin:0 auto}
+.section-label{font-family:'Fira Code',monospace;font-size:11px;color:var(--teal);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+.section-label::before{content:'//';color:var(--blue)}
+h2.section-title{font-size:clamp(28px,4vw,44px);font-weight:700;margin-bottom:48px;line-height:1.2}
+h2.section-title span{color:var(--blue)}
+
+/* ABOUT */
+#about{padding-top:120px}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.about-text p{color:var(--text2);font-size:15px;line-height:1.8;margin-bottom:16px}
+.about-tiles{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+.about-tile{background:rgba(59,130,246,0.05);border:1px solid var(--border);border-radius:10px;padding:20px;transition:all 0.3s;cursor:default}
+.about-tile:hover{background:rgba(59,130,246,0.1);border-color:var(--blue);transform:translateY(-4px);box-shadow:var(--glow)}
+.tile-icon{font-size:22px;margin-bottom:10px}
+.tile-title{font-size:13px;font-weight:600;color:var(--blue);margin-bottom:6px}
+.tile-desc{font-size:12px;color:var(--text2);line-height:1.5}
+.about-info{display:flex;flex-direction:column;gap:16px}
+.info-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px}
+.info-card h3{font-size:15px;font-weight:600;color:var(--teal);margin-bottom:12px;font-family:'Fira Code',monospace}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px}
+.info-row:last-child{border-bottom:none}
+.info-row .key{color:var(--text2)}
+.info-row .val{color:var(--text);font-weight:500;font-family:'Fira Code',monospace;font-size:12px}
+
+/* SKILLS */
+#skills{background:var(--bg2);border-radius:20px;margin:0 2%;padding:80px 5%}
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.skill-col h3{font-size:14px;font-weight:600;color:var(--teal);margin-bottom:24px;font-family:'Fira Code',monospace;letter-spacing:1px;display:flex;align-items:center;gap:8px}
+.skill-col h3::before{content:'';width:20px;height:1px;background:var(--teal)}
+.skill-item{margin-bottom:20px}
+.skill-header{display:flex;justify-content:space-between;margin-bottom:8px;font-size:13px}
+.skill-name{color:var(--text)}
+.skill-pct{color:var(--blue);font-family:'Fira Code',monospace;font-size:12px}
+.skill-bar{height:4px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden}
+.skill-fill{height:100%;border-radius:2px;width:0;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);position:relative}
+.skill-fill.blue{background:linear-gradient(90deg,var(--blue),var(--indigo))}
+.skill-fill.teal{background:linear-gradient(90deg,var(--teal),var(--blue))}
+.skill-fill.purple{background:linear-gradient(90deg,var(--purple),var(--indigo))}
+.skill-fill::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:inherit;box-shadow:0 0 8px currentColor}
+
+/* PROJECTS */
+#projects{padding-top:100px}
+.carousel-wrap{position:relative}
+.carousel{display:flex;gap:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:8px;cursor:grab}
+.carousel::-webkit-scrollbar{display:none}
+.carousel.grabbing{cursor:grabbing}
+.proj-card{min-width:300px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden;scroll-snap-align:start;transition:all 0.4s;flex-shrink:0;position:relative}
+.proj-card::before{content:'';position:absolute;inset:0;border-radius:14px;background:linear-gradient(135deg,rgba(59,130,246,0.1),transparent);opacity:0;transition:opacity 0.4s}
+.proj-card:hover{transform:translateY(-8px);border-color:var(--blue);box-shadow:var(--glow)}
+.proj-card:hover::before{opacity:1}
+/* chip pin effect */
+.proj-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--teal),var(--indigo));opacity:0;transition:opacity 0.3s}
+.proj-card:hover::after{opacity:1}
+.proj-thumb{height:180px;overflow:hidden;position:relative}
+.proj-thumb img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s;-webkit-user-drag:none;user-select:none;pointer-events:none}
+.proj-card:hover .proj-thumb img{transform:scale(1.08)}
+.proj-thumb-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px;background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(20,184,166,0.05))}
+.proj-body{padding:20px;position:relative;z-index:2}
+.proj-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.tag{font-size:10px;font-family:'Fira Code',monospace;padding:3px 8px;border-radius:4px;border:1px solid rgba(59,130,246,0.3);color:var(--blue);background:rgba(59,130,246,0.05)}
+.proj-title{font-size:15px;font-weight:700;margin-bottom:8px;color:var(--text)}
+.proj-desc{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:16px}
+.proj-btn{background:transparent;border:1px solid var(--blue);color:var(--blue);padding:8px 18px;border-radius:6px;font-size:12px;font-family:'Space Grotesk',sans-serif;cursor:pointer;transition:all 0.3s;width:100%;position:relative;z-index:5}
+.proj-btn:hover{background:var(--blue);color:#fff}
+.carousel-controls{display:flex;justify-content:center;align-items:center;gap:16px;margin-top:28px}
+.car-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--bg2);color:var(--blue);cursor:pointer;font-size:16px;transition:all 0.3s;display:flex;align-items:center;justify-content:center}
+.car-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.car-dots{display:flex;gap:8px}
+.dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.2);cursor:pointer;transition:all 0.3s}
+.dot.active{background:var(--blue);width:20px;border-radius:3px}
+
+/* INTERNSHIP */
+#internship{padding:100px 5%}
+.intern-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.intern-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:32px;position:relative;overflow:hidden}
+.intern-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(180deg,var(--blue),var(--teal))}
+.intern-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:16px}
+.intern-co{font-size:18px;font-weight:700;color:var(--blue)}
+.intern-date{font-size:11px;font-family:'Fira Code',monospace;color:var(--teal);background:rgba(20,184,166,0.1);padding:4px 10px;border-radius:4px}
+.intern-role{font-size:13px;color:var(--text2);margin-bottom:16px;font-style:italic}
+.intern-points{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.intern-points li{font-size:13px;color:var(--text2);line-height:1.5;padding-left:16px;position:relative}
+.intern-points li::before{content:'▸';position:absolute;left:0;color:var(--blue)}
+.tools-wrap{display:flex;flex-wrap:wrap;gap:8px}
+.tool-badge{font-size:11px;font-family:'Fira Code',monospace;padding:4px 10px;border-radius:4px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);color:var(--blue)}
+
+/* CERTS */
+#certifications{background:var(--bg2);border-radius:20px;margin:0 2%;padding:80px 5%}
+.cert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.cert-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:28px;display:flex;align-items:center;gap:20px;transition:all 0.3s;text-decoration:none}
+.cert-card:hover{border-color:var(--teal);transform:translateY(-4px);box-shadow:var(--glow2)}
+.cert-icon{width:50px;height:50px;border-radius:10px;background:linear-gradient(135deg,rgba(20,184,166,0.2),rgba(59,130,246,0.1));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.cert-info h4{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px}
+.cert-info p{font-size:12px;color:var(--text2)}
+.cert-dl{margin-left:auto;color:var(--teal);font-size:18px;flex-shrink:0}
+
+/* ACHIEVEMENTS */
+#achievements{padding:100px 5%}
+.ach-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.ach-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:32px;position:relative;overflow:hidden;transition:all 0.3s}
+.ach-card::before{content:'';position:absolute;top:-50%;right:-50%;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,0.08),transparent 70%)}
+.ach-card:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:var(--glow)}
+.ach-rank{font-size:48px;font-weight:700;font-family:'Fira Code',monospace;color:var(--blue);opacity:0.3;position:absolute;right:24px;top:16px;line-height:1}
+.ach-trophy{font-size:28px;margin-bottom:12px}
+.ach-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.ach-event{font-size:13px;color:var(--teal);margin-bottom:8px}
+.ach-detail{font-size:12px;color:var(--text2);margin-bottom:20px}
+.ach-dl{background:transparent;border:1px solid var(--border);color:var(--text2);padding:8px 16px;border-radius:6px;font-size:12px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all 0.3s}
+.ach-dl:hover{border-color:var(--blue);color:var(--blue)}
+
+/* MENTORS */
+#mentors{background:var(--bg2);border-radius:20px;margin:0 2%;padding:80px 5%}
+.mentor-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.mentor-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:28px;text-align:center;transition:all 0.3s}
+.mentor-card:hover{border-color:var(--indigo);transform:translateY(-6px);box-shadow:0 0 30px rgba(99,102,241,0.2)}
+.mentor-avatar{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--indigo),var(--blue));display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 16px;border:2px solid rgba(99,102,241,0.3)}
+.mentor-name{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px}
+.mentor-role{font-size:12px;color:var(--text2);margin-bottom:16px;line-height:1.4}
+.mentor-li{display:inline-flex;align-items:center;gap:6px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);color:var(--blue);padding:7px 16px;border-radius:6px;font-size:12px;text-decoration:none;transition:all 0.3s}
+.mentor-li:hover{background:var(--blue);color:#fff}
+
+/* CONTACT */
+#contact{padding:100px 5%}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.contact-links{display:flex;flex-direction:column;gap:16px}
+.contact-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px;display:flex;align-items:center;gap:16px;text-decoration:none;transition:all 0.3s}
+.contact-card:hover{border-color:var(--blue);transform:translateX(4px);box-shadow:var(--glow)}
+.cc-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.cc-icon.mail{background:rgba(59,130,246,0.15)}
+.cc-icon.li{background:rgba(20,184,166,0.15)}
+.cc-icon.gh{background:rgba(99,102,241,0.15)}
+.cc-text h4{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px}
+.cc-text p{font-size:12px;color:var(--text2)}
+.cta-box{background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(20,184,166,0.05));border:1px solid var(--border);border-radius:16px;padding:40px;text-align:center}
+.cta-box h3{font-size:24px;font-weight:700;margin-bottom:12px}
+.cta-box p{color:var(--text2);font-size:14px;margin-bottom:28px;line-height:1.6}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(5,10,24,0.9);backdrop-filter:blur(10px);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:16px;max-width:700px;width:100%;max-height:90vh;overflow-y:auto;transform:scale(0.9);opacity:0;transition:all 0.3s;position:relative}
+.modal-overlay.open .modal{transform:scale(1);opacity:1}
+.modal-header{padding:28px 32px 0;display:flex;justify-content:space-between;align-items:start}
+.modal-title{font-size:20px;font-weight:700;color:var(--text)}
+.modal-close{background:transparent;border:none;color:var(--text2);font-size:22px;cursor:pointer;line-height:1;padding:4px;transition:color 0.2s}
+.modal-close:hover{color:var(--text)}
+.modal-body{padding:24px 32px 32px}
+.modal-thumb{width:100%;height:220px;border-radius:10px;overflow:hidden;margin-bottom:20px}
+.modal-thumb img{width:100%;height:100%;object-fit:cover}
+.modal-desc{color:var(--text2);font-size:14px;line-height:1.7;margin-bottom:20px}
+.modal-points{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.modal-points li{font-size:13px;color:var(--text2);padding-left:16px;position:relative;line-height:1.5}
+.modal-points li::before{content:'▸';position:absolute;left:0;color:var(--blue)}
+.modal-stack{margin-top:20px}
+.modal-stack h4{font-size:12px;color:var(--teal);font-family:'Fira Code',monospace;margin-bottom:10px;letter-spacing:1px}
+.modal-tags{display:flex;flex-wrap:wrap;gap:8px}
+
+/* BACK TO TOP */
+#btt{position:fixed;bottom:30px;right:30px;width:44px;height:44px;border-radius:50%;background:var(--blue);border:none;color:#fff;font-size:18px;cursor:pointer;opacity:0;transform:translateY(20px);transition:all 0.3s;z-index:200;box-shadow:var(--glow)}
+#btt.visible{opacity:1;transform:translateY(0)}
+#btt:hover{background:var(--indigo);transform:translateY(-4px)}
+
+/* FOOTER */
+footer{text-align:center;padding:40px 5%;border-top:1px solid var(--border);color:var(--text2);font-size:13px;font-family:'Fira Code',monospace}
+footer span{color:var(--blue)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(40px);transition:all 0.7s cubic-bezier(0.4,0,0.2,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+.reveal-delay-4{transition-delay:0.4s}
+
+/* MOBILE NAV */
+.mobile-nav{position:fixed;inset:0;background:rgba(5,10,24,0.97);z-index:90;flex-direction:column;align-items:center;justify-content:center;gap:32px;display:none}
+.mobile-nav.open{display:flex}
+.mobile-nav a{color:var(--text2);text-decoration:none;font-size:20px;letter-spacing:2px;text-transform:uppercase;transition:color 0.3s}
+.mobile-nav a:hover{color:var(--blue)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .hero-content{grid-template-columns:1fr;text-align:center}
+  .hero-right{margin-top:40px}
+  .about-grid{grid-template-columns:1fr}
+  .skills-grid{grid-template-columns:1fr}
+  .intern-grid{grid-template-columns:1fr}
+  .cert-grid{grid-template-columns:1fr}
+  .ach-grid{grid-template-columns:1fr}
+  .mentor-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .nav-toggle{display:flex}
+  .hero-counters{justify-content:center}
+  .hero-btns{justify-content:center}
+  .hero-desc{margin:0 auto 32px}
+  section{padding:80px 5%}
+}
+@media(max-width:600px){
+  .about-tiles{grid-template-columns:1fr}
+  .profile-wrap{width:200px;height:200px}
+  .orbit-1{width:260px;height:260px}
+  .orbit-2{width:320px;height:320px}
+  .orbit-3{width:380px;height:380px}
+  .profile-circle{width:180px;height:180px}
+}
+
+/* CHIP PINS */
+.chip-pins{position:absolute;inset:-30px;pointer-events:none}
+.pin{position:absolute;background:var(--teal);box-shadow:0 0 6px var(--teal)}
+.pin.h{width:20px;height:2px}
+.pin.v{width:2px;height:20px}
+
+/* FPGA decoration in hero */
+#fpgaCanvas{position:absolute;right:0;top:0;bottom:0;width:50%;z-index:2;opacity:0.15;pointer-events:none}
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="pre-chip">
+    <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="15" y="15" width="50" height="50" rx="4" stroke="#3b82f6" stroke-width="1.5"/>
+      <rect x="22" y="22" width="36" height="36" rx="2" fill="rgba(59,130,246,0.1)" stroke="#14b8a6" stroke-width="1"/>
+      <circle cx="40" cy="40" r="8" fill="rgba(59,130,246,0.2)" stroke="#6366f1" stroke-width="1"/>
+      <line x1="15" y1="30" x2="5" y2="30" stroke="#3b82f6" stroke-width="1.5"/>
+      <line x1="15" y1="40" x2="5" y2="40" stroke="#3b82f6" stroke-width="1.5"/>
+      <line x1="15" y1="50" x2="5" y2="50" stroke="#3b82f6" stroke-width="1.5"/>
+      <line x1="65" y1="30" x2="75" y2="30" stroke="#3b82f6" stroke-width="1.5"/>
+      <line x1="65" y1="40" x2="75" y2="40" stroke="#3b82f6" stroke-width="1.5"/>
+      <line x1="65" y1="50" x2="75" y2="50" stroke="#3b82f6" stroke-width="1.5"/>
+      <line x1="30" y1="15" x2="30" y2="5" stroke="#14b8a6" stroke-width="1.5"/>
+      <line x1="40" y1="15" x2="40" y2="5" stroke="#14b8a6" stroke-width="1.5"/>
+      <line x1="50" y1="15" x2="50" y2="5" stroke="#14b8a6" stroke-width="1.5"/>
+      <line x1="30" y1="65" x2="30" y2="75" stroke="#14b8a6" stroke-width="1.5"/>
+      <line x1="40" y1="65" x2="40" y2="75" stroke="#14b8a6" stroke-width="1.5"/>
+      <line x1="50" y1="65" x2="50" y2="75" stroke="#14b8a6" stroke-width="1.5"/>
+    </svg>
+  </div>
+  <div class="pre-bar"><div class="pre-fill"></div></div>
+  <div class="pre-text">INITIALIZING SYSTEM...</div>
+</div>
+
+<!-- SCROLL PROGRESS -->
+<div id="progress"></div>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="logo">BK<span>.vlsi</span></div>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#internship">Experience</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-toggle" id="navToggle">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#hero" onclick="closeMobileNav()">Home</a>
+  <a href="#about" onclick="closeMobileNav()">About</a>
+  <a href="#skills" onclick="closeMobileNav()">Skills</a>
+  <a href="#projects" onclick="closeMobileNav()">Projects</a>
+  <a href="#internship" onclick="closeMobileNav()">Experience</a>
+  <a href="#achievements" onclick="closeMobileNav()">Achievements</a>
+  <a href="#contact" onclick="closeMobileNav()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="circuit-bg"></div>
+  <canvas id="waveCanvas"></canvas>
+  <canvas id="particleCanvas"></canvas>
+  <canvas id="fpgaCanvas"></canvas>
+
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-badge">⚡ VLSI &amp; FPGA Engineer</div>
+      <h1 class="hero-name">
+        <span class="first">Balajothi</span><br>
+        <span class="last">Kathirvel</span>
+      </h1>
+      <div class="hero-title">&gt;_ RTL Design | FPGA | Analog IC | EDA</div>
+      <p class="hero-desc">ECE student at LPU specializing in VLSI design, FPGA development, RTL coding in Verilog, and analog IC design using Cadence Virtuoso. Building the silicon future — one gate at a time.</p>
+      <div class="hero-counters">
+        <div class="counter-item">
+          <div class="counter-num" data-target="4">0</div>
+          <div class="counter-label">Projects</div>
+        </div>
+        <div class="counter-item">
+          <div class="counter-num" data-target="4000" data-suffix="+">0</div>
+          <div class="counter-label">Competition Participants</div>
+        </div>
+        <div class="counter-item">
+          <div class="counter-num" data-target="6">0</div>
+          <div class="counter-label">EDA Tools</div>
+        </div>
+      </div>
+      <div class="hero-btns">
+        <a href="#projects" class="btn-primary">⚡ View Projects</a>
+        <a href="#contact" class="btn-outline">Contact Me</a>
+        <a href="https://github.com/bala7415" target="_blank" class="btn-teal">↓ Resume</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="profile-wrap">
+        <div class="orbit orbit-1"><div class="orbit-dot blue"></div></div>
+        <div class="orbit orbit-2"><div class="orbit-dot teal"></div></div>
+        <div class="orbit orbit-3"><div class="orbit-dot indigo"></div></div>
+        <div class="profile-circle">
+          <img src="profile.png" alt="Balajothi K" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#3b82f6,#14b8a6);display:flex;align-items:center;justify-content:center;font-size:60px;\'>⚡</div>'">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About Me</div>
+  <h2 class="section-title">Engineering the <span>Silicon Future</span></h2>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>I am <strong style="color:var(--blue)">Balajothi Kathirvel</strong>, an Electronics and Communication Engineering student at Lovely Professional University (2023–2027), specializing in VLSI design, FPGA development, and analog integrated circuit design.</p>
+      <p>My expertise spans the complete digital IC design flow — from RTL coding in Verilog to synthesis, static timing analysis, and physical design. I work with industry-standard EDA tools including Cadence Virtuoso, Xilinx Vivado, OpenSTA, and Yosys.</p>
+      <p>Currently exploring cutting-edge areas like self-healing computing systems, hardware cryptography, and AI hardware acceleration on FPGA platforms.</p>
+      <div class="about-tiles">
+        <div class="about-tile reveal reveal-delay-1">
+          <div class="tile-icon">🔧</div>
+          <div class="tile-title">RTL → GDS-II Flow</div>
+          <div class="tile-desc">Complete digital IC design from RTL to physical implementation</div>
+        </div>
+        <div class="about-tile reveal reveal-delay-2">
+          <div class="tile-icon">⚡</div>
+          <div class="tile-title">FPGA Development</div>
+          <div class="tile-desc">Nexys 4 DDR, Spartan 6 — synthesis, constraints, deployment</div>
+        </div>
+        <div class="about-tile reveal reveal-delay-3">
+          <div class="tile-icon">📐</div>
+          <div class="tile-title">Analog IC Design</div>
+          <div class="tile-desc">LDO regulators, op-amps, and custom analog blocks in Cadence</div>
+        </div>
+        <div class="about-tile reveal reveal-delay-4">
+          <div class="tile-icon">🤖</div>
+          <div class="tile-title">AI Hardware</div>
+          <div class="tile-desc">FPGA-based hardware acceleration for AI/ML workloads</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-info reveal reveal-delay-2">
+      <div class="info-card">
+        <h3>// education</h3>
+        <div class="info-row"><span class="key">University</span><span class="val">LPU, Jalandhar</span></div>
+        <div class="info-row"><span class="key">Degree</span><span class="val">B.Tech ECE</span></div>
+        <div class="info-row"><span class="key">CGPA</span><span class="val">7.78</span></div>
+        <div class="info-row"><span class="key">Duration</span><span class="val">2023 – 2027</span></div>
+      </div>
+      <div class="info-card">
+        <h3>// personal</h3>
+        <div class="info-row"><span class="key">Location</span><span class="val">Erode, TN</span></div>
+        <div class="info-row"><span class="key">Email</span><span class="val">kbalajothikathirvel@gmail.com</span></div>
+        <div class="info-row"><span class="key">Phone</span><span class="val">+91 9361524368</span></div>
+        <div class="info-row"><span class="key">Status</span><span class="val" style="color:var(--teal)">Open to Internships</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" style="max-width:100%;margin:0;border-radius:0">
+  <div style="max-width:1200px;margin:0 auto">
+  <div class="section-label">Technical Skills</div>
+  <h2 class="section-title">My <span>Toolbox</span></h2>
+  <div class="skills-grid">
+    <div class="skill-col reveal">
+      <h3>Hardware Design</h3>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">Verilog HDL</span><span class="skill-pct">92%</span></div><div class="skill-bar"><div class="skill-fill blue" data-pct="92"></div></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">FPGA Design</span><span class="skill-pct">88%</span></div><div class="skill-bar"><div class="skill-fill blue" data-pct="88"></div></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">Digital Systems</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill blue" data-pct="85"></div></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">RTL Design</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill blue" data-pct="90"></div></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">Analog Circuit Design</span><span class="skill-pct">78%</span></div><div class="skill-bar"><div class="skill-fill blue" data-pct="78"></div></div></div>
+    </div>
+    <div class="skill-col reveal reveal-delay-2">
+      <h3>Programming</h3>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">C++</span><span class="skill-pct">82%</span></div><div class="skill-bar"><div class="skill-fill teal" data-pct="82"></div></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">Algorithms & DSA</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill teal" data-pct="75"></div></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">HTML/CSS/JS</span><span class="skill-pct">70%</span></div><div class="skill-bar"><div class="skill-fill teal" data-pct="70"></div></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">TCL Scripting</span><span class="skill-pct">72%</span></div><div class="skill-bar"><div class="skill-fill teal" data-pct="72"></div></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">Problem Solving</span><span class="skill-pct">88%</span></div><div class="skill-bar"><div class="skill-fill teal" data-pct="88"></div></div></div>
+    </div>
+    <div class="skill-col reveal reveal-delay-3">
+      <h3>EDA Tools</h3>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">Xilinx Vivado</span><span class="skill-pct">90%</span></div><div class="skill-bar"><div class="skill-fill purple" data-pct="90"></div></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">Cadence Virtuoso</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill purple" data-pct="80"></div></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">OpenSTA / Yosys</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill purple" data-pct="75"></div></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">Fusion 360 / Simulia</span><span class="skill-pct">70%</span></div><div class="skill-bar"><div class="skill-fill purple" data-pct="70"></div></div></div>
+      <div class="skill-item"><div class="skill-header"><span class="skill-name">Synopsys GenSys</span><span class="skill-pct">65%</span></div><div class="skill-bar"><div class="skill-fill purple" data-pct="65"></div></div></div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Portfolio</div>
+  <h2 class="section-title">Featured <span>Projects</span></h2>
+  <div class="carousel-wrap">
+    <div class="carousel" id="carousel">
+
+      <div class="proj-card">
+        <div class="proj-thumb">
+          <img src="alu_project_thumbnail.jpg" alt="Self Healing FPGA" onerror="this.parentElement.innerHTML='<div class=proj-thumb-fallback>🔧</div>'">
+        </div>
+        <div class="proj-body">
+          <div class="proj-tags"><span class="tag">Verilog</span><span class="tag">FPGA</span><span class="tag">BIST</span><span class="tag">Fault-Tolerant</span></div>
+          <div class="proj-title">Self-Healing Computing System</div>
+          <div class="proj-desc">4-bit ALU with fault detection and BIST mechanism. Partial reconfiguration on Xilinx FPGA for autonomous fault recovery.</div>
+          <a href="https://github.com/bala7415/FPGA-Self-Healing-ALU-BIST" target="_blank" class="proj-btn" style="display:flex;align-items:center;justify-content:center;text-decoration:none">View on GitHub →</a>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-thumb">
+          <img src="ldo_thumbnail.jpg" alt="LDO Regulator" onerror="this.parentElement.innerHTML='<div class=proj-thumb-fallback>📐</div>'">
+        </div>
+        <div class="proj-body">
+          <div class="proj-tags"><span class="tag">Cadence</span><span class="tag">Analog IC</span><span class="tag">LDO</span><span class="tag">PMOS</span></div>
+          <div class="proj-title">Low Power LDO Voltage Regulator</div>
+          <div class="proj-desc">Two-stage error amplifier LDO topology in Cadence Virtuoso. Analyzed dropout, line regulation, and power supply rejection.</div>
+          <a href="https://github.com/bala7415/LDO-Voltage-Regulator-Cadence" target="_blank" class="proj-btn" style="display:flex;align-items:center;justify-content:center;text-decoration:none">View on GitHub →</a>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-thumb">
+          <img src="encryption_thumbnail.jpg" alt="Encryption FPGA" onerror="this.parentElement.innerHTML='<div class=proj-thumb-fallback>🔐</div>'">
+        </div>
+        <div class="proj-body">
+          <div class="proj-tags"><span class="tag">Verilog</span><span class="tag">Cryptography</span><span class="tag">UART</span><span class="tag">256-bit</span></div>
+          <div class="proj-title">FPGA Encryption Accelerator</div>
+          <div class="proj-desc">Hardware-based 256-bit encryption system on FPGA with UART secure data transmission. Pipelined SPNetwork architecture.</div>
+          <a href="https://github.com/bala7415/-FPGA-Encryption-Accelerator-256bit" target="_blank" class="proj-btn" style="display:flex;align-items:center;justify-content:center;text-decoration:none">View on GitHub →</a>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-thumb">
+          <img src="fitfusion_thumbnail.jpg" alt="FitFusion AI" onerror="this.parentElement.innerHTML='<div class=proj-thumb-fallback>🤖</div>'">
+        </div>
+        <div class="proj-body">
+          <div class="proj-tags"><span class="tag">AI/ML</span><span class="tag">Fitness</span><span class="tag">Platform</span><span class="tag">IIT Roorkee</span></div>
+          <div class="proj-title">FitFusion AI Fitness Platform</div>
+          <div class="proj-desc">Winner at IIT Roorkee Cognizance 2025. AI-powered fitness platform competing among 4000+ participants nationwide.</div>
+          <a href="https://github.com/bala7415" target="_blank" class="proj-btn" style="display:flex;align-items:center;justify-content:center;text-decoration:none">View on GitHub →</a>
+        </div>
+      </div>
+
+    </div>
+    <div class="carousel-controls">
+      <button class="car-btn" id="carPrev">&#8592;</button>
+      <div class="car-dots" id="carDots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <button class="car-btn" id="carNext">&#8594;</button>
+    </div>
+  </div>
+</section>
+
+<!-- INTERNSHIP -->
+<section id="internship">
+  <div class="section-label">Experience</div>
+  <h2 class="section-title">Professional <span>Training</span></h2>
+  <div class="intern-grid">
+    <div class="intern-card reveal">
+      <div class="intern-header">
+        <div>
+          <div class="intern-co">Aerion Private Limited</div>
+          <div class="intern-role">CubeSat Modelling Trainee</div>
+        </div>
+        <div class="intern-date">Jun '25 – Jul '25</div>
+      </div>
+      <ul class="intern-points">
+        <li>Conducted Finite Element Analysis (FEA) on CubeSat structures to ensure structural integrity for mission-critical applications</li>
+        <li>Modeled satellite components using Fusion 360 and performed high-fidelity simulations in Simulia for mechanical and thermal analysis</li>
+        <li>Explored communication subsystem architectures for surveillance and remote sensing payloads</li>
+        <li>Developed modular 3D designs following standard aerospace prototyping principles</li>
+      </ul>
+      <div class="tools-wrap">
+        <span class="tool-badge">Simulia</span>
+        <span class="tool-badge">Fusion 360</span>
+        <span class="tool-badge">MATLAB</span>
+        <span class="tool-badge">FEA</span>
+        <span class="tool-badge">CAD</span>
+      </div>
+      <br>
+      <a href="https://github.com/bala7415/VLSI-Certifications-and-Internships" target="_blank" class="btn-outline" style="font-size:13px;margin-top:16px;display:inline-flex">View on GitHub</a>
+    </div>
+    <div class="intern-card reveal reveal-delay-2">
+      <div class="intern-header">
+        <div>
+          <div class="intern-co">Fermi IC Design</div>
+          <div class="intern-role">Static Timing Analysis — Winter Trainee</div>
+        </div>
+        <div class="intern-date">Jan '26 – Feb '26</div>
+      </div>
+      <ul class="intern-points">
+        <li>Studied the digital IC design flow from RTL to gate-level netlist, focusing on timing verification before physical design</li>
+        <li>Performed STA using OpenSTA to analyze setup, hold, and slack for critical timing paths</li>
+        <li>Applied timing constraints and clock definitions to evaluate timing closure in synthesized digital designs</li>
+        <li>Explored FPGA synthesis and timing reports using Xilinx Vivado to understand path delays and violations</li>
+      </ul>
+      <div class="tools-wrap">
+        <span class="tool-badge">OpenSTA</span>
+        <span class="tool-badge">Xilinx Vivado</span>
+        <span class="tool-badge">Yosys</span>
+        <span class="tool-badge">TCL</span>
+        <span class="tool-badge">STA</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications" style="max-width:100%;margin:0;border-radius:0">
+  <div style="max-width:1200px;margin:0 auto">
+  <div class="section-label">Certifications</div>
+  <h2 class="section-title">NPTEL <span>Credentials</span></h2>
+  <div class="cert-grid">
+    <a href="https://github.com/bala7415/VLSI-Certifications-and-Internships" target="_blank" class="cert-card reveal">
+      <div class="cert-icon">🔬</div>
+      <div class="cert-info">
+        <h4>VLSI Design Flow: RTL to GDS-II</h4>
+        <p>IIIT Bangalore, NPTEL — Oct 2025</p>
+      </div>
+      <div class="cert-dl">↗</div>
+    </a>
+    <a href="https://github.com/bala7415/VLSI-Certifications-and-Internships" target="_blank" class="cert-card reveal reveal-delay-2">
+      <div class="cert-icon">🗄️</div>
+      <div class="cert-info">
+        <h4>Database Management System</h4>
+        <p>IIT Kharagpur, NPTEL — Oct 2025</p>
+      </div>
+      <div class="cert-dl">↗</div>
+    </a>
+  </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="section-label">Achievements</div>
+  <h2 class="section-title">Competition <span>Wins</span></h2>
+  <div class="ach-grid">
+    <div class="ach-card reveal">
+      <div class="ach-rank">01</div>
+      <div class="ach-trophy">🏆</div>
+      <div class="ach-title">First Position — FitFusion</div>
+      <div class="ach-event">Cognizance, IIT Roorkee — Mar 2025</div>
+      <div class="ach-detail">Won first place among 4000+ participants in one of India's largest technical fests. AI-powered fitness platform recognized for innovation.</div>
+      <a href="https://github.com/bala7415" target="_blank" class="ach-dl">↗ View on GitHub</a>
+    </div>
+    <div class="ach-card reveal reveal-delay-2">
+      <div class="ach-rank">23</div>
+      <div class="ach-trophy">🥈</div>
+      <div class="ach-title">Rank 23 — AI & ML FPGA</div>
+      <div class="ach-event">North Zone, NIT Jamshedpur — Feb 2026</div>
+      <div class="ach-detail">Secured 23rd position among 1000+ participants in the North Zone AI & ML FPGA competition, demonstrating FPGA-based AI acceleration skills.</div>
+      <a href="https://github.com/bala7415" target="_blank" class="ach-dl">↗ View on GitHub</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Get In Touch</div>
+  <h2 class="section-title">Let's <span>Connect</span></h2>
+  <div class="contact-grid">
+    <div class="contact-links">
+      <a href="mailto:kbalajothikathirvel@gmail.com" class="contact-card reveal">
+        <div class="cc-icon mail">📧</div>
+        <div class="cc-text"><h4>Email</h4><p>kbalajothikathirvel@gmail.com</p></div>
+      </a>
+      <a href="https://www.linkedin.com/in/balajothi-kathirvel" target="_blank" class="contact-card reveal reveal-delay-2">
+        <div class="cc-icon li">💼</div>
+        <div class="cc-text"><h4>LinkedIn</h4><p>linkedin.com/in/balajothi-kathirvel</p></div>
+      </a>
+      <a href="https://github.com/balajothik" target="_blank" class="contact-card reveal reveal-delay-3">
+        <div class="cc-icon gh">💻</div>
+        <div class="cc-text"><h4>GitHub</h4><p>github.com/balajothik</p></div>
+      </a>
+    </div>
+    <div class="cta-box reveal reveal-delay-2">
+      <h3>Open to <span style="color:var(--blue)">Opportunities</span></h3>
+      <p>Currently seeking internships and research positions in VLSI design, FPGA development, and digital IC design. Let's build the silicon future together.</p>
+      <a href="https://github.com/bala7415" target="_blank" class="btn-primary" style="display:inline-flex;margin:0 auto">↗ View GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Designed &amp; Built by <span>Balajothi Kathirvel</span> — VLSI &amp; FPGA Engineer</p>
+  <p style="margin-top:8px;font-size:11px;opacity:0.4">© 2026 | Built with &lt;silicon&gt; and &lt;code&gt;</p>
+</footer>
+
+<!-- BACK TO TOP -->
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-thumb" id="modalThumb"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <ul class="modal-points" id="modalPoints"></ul>
+      <div class="modal-stack">
+        <h4>// TECH STACK</h4>
+        <div class="modal-tags" id="modalTags"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== PROJECT DATA ==========
+const projects = [
+  {
+    title: "Self-Healing Computing System",
+    thumb: "alu_project_thumbnail.jpg",
+    fallback: "🔧",
+    desc: "Designed and implemented a fault-tolerant 4-bit ALU with integrated Built-In Self-Test (BIST) mechanism at Bharat Electronics Limited (Sep 2025). Features dynamic fault isolation and autonomous recovery via partial reconfiguration.",
+    points: [
+      "4-bit ALU with fault detection and BIST mechanism for autonomous fault identification",
+      "Self-healing architecture using partial reconfiguration on Xilinx FPGA platform",
+      "Faulty logic blocks dynamically isolated and replaced with redundant modules",
+      "Seven-segment display driver for real-time visualization of ALU outputs",
+      "Functional verification and hardware testing with fault injection cases"
+    ],
+    tags: ["Verilog", "Xilinx Vivado", "FPGA Nexys4", "Digital System Design", "Hardware Verification", "Fault-Tolerant Computing"]
+  },
+  {
+    title: "Low Power LDO Voltage Regulator",
+    thumb: "ldo_thumbnail.jpg",
+    fallback: "📐",
+    desc: "Designed a low dropout (LDO) linear voltage regulator in Cadence Virtuoso (Dec 2025), providing stable output voltage for power-sensitive analog and mixed-signal integrated circuits.",
+    points: [
+      "Two-stage error amplifier topology for precise voltage regulation under varying load",
+      "PMOS pass device for low dropout operation and efficient current delivery",
+      "Analysis of dropout voltage, line regulation, load regulation, and quiescent current",
+      "Simulated transient response, loop stability, and power supply rejection (PSRR)",
+      "Optimized for minimal quiescent current in power-sensitive applications"
+    ],
+    tags: ["Cadence Virtuoso", "Analog IC Design", "LDO Regulator", "Two-Stage Error Amplifier", "PMOS Pass Transistor", "SPICE Simulation"]
+  },
+  {
+    title: "FPGA Encryption Accelerator",
+    thumb: "encryption_thumbnail.jpg",
+    fallback: "🔐",
+    desc: "Hardware-based 256-bit encryption system on FPGA for high-speed secure data transmission (Feb 2026). Implements a Substitution-Permutation Network (SPN) architecture with UART interface.",
+    points: [
+      "256-bit cryptographic architecture with 2^256 key space encryption strength",
+      "Parallel bitwise transformations and substitution-permutation operations in Verilog",
+      "Modular hardware blocks: key expansion, encryption rounds, control logic",
+      "Pipelined data processing for improved throughput on FPGA architecture",
+      "Timing analysis and LUT optimization using Xilinx Vivado synthesis reports"
+    ],
+    tags: ["Verilog HDL", "Xilinx Vivado", "FPGA Architecture", "Hardware Cryptography", "Digital Logic Design", "Timing Analysis"]
+  },
+  {
+    title: "FitFusion AI Fitness Platform",
+    thumb: "fitfusion_thumbnail.jpg",
+    fallback: "🤖",
+    desc: "First-place winner at IIT Roorkee Cognizance 2025 — AI-powered fitness platform that personalized workout recommendations competing among 4000+ participants from across India.",
+    points: [
+      "First Position at Cognizance, IIT Roorkee 2025 among 4000+ participants",
+      "AI-driven personalized fitness planning and recommendation engine",
+      "Full-stack platform with real-time user progress tracking",
+      "Innovative integration of machine learning for workout optimization",
+      "Recognized for exceptional technical implementation and product design"
+    ],
+    tags: ["AI/ML", "Full-Stack", "Python", "Machine Learning", "IIT Roorkee", "Cognizance 2025"]
+  }
+];
+
+// ========== PRELOADER ==========
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const pre = document.getElementById('preloader');
+    pre.style.opacity = '0';
+    pre.style.transition = 'opacity 0.6s';
+    setTimeout(() => { pre.style.display = 'none'; }, 600);
+  }, 2600);
+});
+
+// ========== SCROLL PROGRESS ==========
+window.addEventListener('scroll', () => {
+  const prog = document.getElementById('progress');
+  const p = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  prog.style.width = p + '%';
+  
+  // NAVBAR
+  const nav = document.getElementById('navbar');
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+  
+  // BACK TO TOP
+  document.getElementById('btt').classList.toggle('visible', window.scrollY > 400);
+  
+  // PARALLAX circuit bg
+  document.querySelector('.circuit-bg').style.backgroundPosition = `${window.scrollY * 0.2}px ${window.scrollY * 0.2}px`;
+});
+
+// ========== MOBILE NAV ==========
+document.getElementById('navToggle').addEventListener('click', () => {
+  document.getElementById('mobileNav').classList.toggle('open');
+});
+function closeMobileNav() {
+  document.getElementById('mobileNav').classList.remove('open');
+}
+
+// ========== WAVE CANVAS ==========
+(function() {
+  const canvas = document.getElementById('waveCanvas');
+  const ctx = canvas.getContext('2d');
+  let w, h, offset = 0;
+
+  function resize() {
+    w = canvas.width = canvas.offsetWidth;
+    h = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const waves = [
+    { y: 0.25, amp: 18, freq: 0.012, speed: 0.4, color: 'rgba(59,130,246,0.12)', square: true },
+    { y: 0.45, amp: 22, freq: 0.008, speed: 0.3, color: 'rgba(20,184,166,0.08)', square: true },
+    { y: 0.65, amp: 15, freq: 0.015, speed: 0.5, color: 'rgba(99,102,241,0.07)', square: true },
+    { y: 0.8, amp: 10, freq: 0.02, speed: 0.25, color: 'rgba(59,130,246,0.06)', square: false },
+  ];
+
+  function drawSquareWave(wave) {
+    const baseY = wave.y * h;
+    const period = (2 * Math.PI / wave.freq);
+    ctx.beginPath();
+    ctx.strokeStyle = wave.color;
+    ctx.lineWidth = 1.5;
+    let drawing = true;
+    let lastX = 0;
+    for (let x = 0; x < w; x++) {
+      const phase = (x + offset * wave.speed * 60) * wave.freq;
+      const sinVal = Math.sin(phase);
+      const y = baseY + (sinVal > 0 ? wave.amp : -wave.amp);
+      if (x === 0) { ctx.moveTo(x, y); lastX = x; }
+      else {
+        const prevPhase = (x - 1 + offset * wave.speed * 60) * wave.freq;
+        const prevSin = Math.sin(prevPhase);
+        if ((sinVal > 0) !== (prevSin > 0)) {
+          ctx.lineTo(x, baseY + (prevSin > 0 ? wave.amp : -wave.amp));
+          ctx.lineTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      }
+    }
+    ctx.stroke();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    waves.forEach(wave => {
+      if (wave.square) drawSquareWave(wave);
+      else {
+        ctx.beginPath();
+        ctx.strokeStyle = wave.color;
+        ctx.lineWidth = 1;
+        for (let x = 0; x < w; x++) {
+          const y = wave.y * h + Math.sin((x + offset * wave.speed * 60) * wave.freq) * wave.amp;
+          x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+    });
+    offset += 0.016;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ========== PARTICLE CANVAS ==========
+(function() {
+  const canvas = document.getElementById('particleCanvas');
+  const ctx = canvas.getContext('2d');
+  let w, h;
+  const particles = [];
+  
+  function resize() {
+    w = canvas.width = canvas.offsetWidth;
+    h = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < 55; i++) {
+    particles.push({
+      x: Math.random() * 1000,
+      y: Math.random() * 800,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      r: Math.random() * 2 + 0.5,
+      pulse: Math.random() * Math.PI * 2,
+      color: ['rgba(59,130,246,', 'rgba(20,184,166,', 'rgba(99,102,241,'][Math.floor(Math.random() * 3)]
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      p.pulse += 0.02;
+      if (p.x < 0) p.x = w; if (p.x > w) p.x = 0;
+      if (p.y < 0) p.y = h; if (p.y > h) p.y = 0;
+      const alpha = 0.4 + Math.sin(p.pulse) * 0.3;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color + alpha + ')';
+      ctx.fill();
+    });
+
+    // Connect nearby particles
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 100) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(59,130,246,${0.08 * (1 - dist / 100)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ========== FPGA CANVAS ==========
+(function() {
+  const canvas = document.getElementById('fpgaCanvas');
+  const ctx = canvas.getContext('2d');
+  let w, h, angle = 0;
+
+  function resize() {
+    w = canvas.width = canvas.offsetWidth;
+    h = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function drawChip() {
+    ctx.clearRect(0, 0, w, h);
+    const cx = w / 2, cy = h / 2;
+    const size = Math.min(w, h) * 0.28;
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(angle);
+
+    // Outer chip body
+    ctx.strokeStyle = 'rgba(59,130,246,0.6)';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(-size, -size, size * 2, size * 2);
+
+    // Inner die
+    ctx.strokeStyle = 'rgba(20,184,166,0.4)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(-size * 0.7, -size * 0.7, size * 1.4, size * 1.4);
+
+    // Internal grid lines
+    ctx.strokeStyle = 'rgba(99,102,241,0.2)';
+    ctx.lineWidth = 0.5;
+    for (let i = -2; i <= 2; i++) {
+      const pos = (i / 3) * size * 0.7;
+      ctx.beginPath();
+      ctx.moveTo(-size * 0.7, pos);
+      ctx.lineTo(size * 0.7, pos);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(pos, -size * 0.7);
+      ctx.lineTo(pos, size * 0.7);
+      ctx.stroke();
+    }
+
+    // Core
+    ctx.fillStyle = 'rgba(59,130,246,0.08)';
+    ctx.fillRect(-size * 0.25, -size * 0.25, size * 0.5, size * 0.5);
+    ctx.strokeStyle = 'rgba(59,130,246,0.4)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(-size * 0.25, -size * 0.25, size * 0.5, size * 0.5);
+
+    // Pins along edges
+    const pinCount = 8;
+    for (let i = 0; i < pinCount; i++) {
+      const t = ((i + 0.5) / pinCount) * 2 * size - size;
+      const glowPulse = 0.4 + Math.sin(Date.now() * 0.003 + i * 0.8) * 0.4;
+      ctx.strokeStyle = `rgba(59,130,246,${glowPulse})`;
+      ctx.lineWidth = 1.5;
+      
+      // Top pins
+      ctx.beginPath(); ctx.moveTo(t, -size); ctx.lineTo(t, -size * 1.25); ctx.stroke();
+      // Bottom pins
+      ctx.beginPath(); ctx.moveTo(t, size); ctx.lineTo(t, size * 1.25); ctx.stroke();
+      // Left pins
+      ctx.beginPath(); ctx.moveTo(-size, t); ctx.lineTo(-size * 1.25, t); ctx.stroke();
+      // Right pins
+      ctx.beginPath(); ctx.moveTo(size, t); ctx.lineTo(size * 1.25, t); ctx.stroke();
+
+      // Pin dots
+      ctx.fillStyle = `rgba(20,184,166,${glowPulse})`;
+      ctx.beginPath(); ctx.arc(t, -size * 1.25, 2, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(t, size * 1.25, 2, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(-size * 1.25, t, 2, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(size * 1.25, t, 2, 0, Math.PI * 2); ctx.fill();
+    }
+
+    // Glow ring
+    const grd = ctx.createRadialGradient(0, 0, size * 0.5, 0, 0, size * 1.5);
+    grd.addColorStop(0, 'rgba(59,130,246,0.05)');
+    grd.addColorStop(1, 'transparent');
+    ctx.fillStyle = grd;
+    ctx.beginPath(); ctx.arc(0, 0, size * 1.5, 0, Math.PI * 2); ctx.fill();
+
+    ctx.restore();
+    angle += 0.003;
+    requestAnimationFrame(drawChip);
+  }
+  drawChip();
+})();
+
+// ========== COUNTER ANIMATION ==========
+function animateCounters() {
+  document.querySelectorAll('.counter-num').forEach(el => {
+    const target = parseInt(el.dataset.target);
+    const suffix = el.dataset.suffix || '';
+    let start = 0;
+    const duration = 2000;
+    const step = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target) + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  });
+}
+let countersAnimated = false;
+const heroObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting && !countersAnimated) { countersAnimated = true; animateCounters(); } });
+});
+heroObserver.observe(document.getElementById('hero'));
+
+// ========== SKILL BAR ANIMATION ==========
+const skillObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.skill-fill').forEach(bar => {
+        bar.style.width = bar.dataset.pct + '%';
+      });
+    }
+  });
+}, { threshold: 0.3 });
+skillObserver.observe(document.getElementById('skills'));
+
+// ========== SCROLL REVEAL ==========
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ========== CAROUSEL ==========
+const carousel = document.getElementById('carousel');
+const dots = document.querySelectorAll('.dot');
+let isDown = false, startX, scrollLeft, dragDistance = 0;
+
+carousel.addEventListener('mousedown', e => {
+  if (e.target.closest('a, button')) return;
+  isDown = true; dragDistance = 0; carousel.classList.add('grabbing');
+  startX = e.pageX - carousel.offsetLeft;
+  scrollLeft = carousel.scrollLeft;
+});
+carousel.addEventListener('mouseleave', () => { isDown = false; carousel.classList.remove('grabbing'); });
+carousel.addEventListener('mouseup', () => { isDown = false; carousel.classList.remove('grabbing'); });
+carousel.addEventListener('mousemove', e => {
+  if (!isDown) return;
+  const x = e.pageX - carousel.offsetLeft;
+  const delta = x - startX;
+  if (Math.abs(delta) > 5) {
+    dragDistance = Math.abs(delta);
+    e.preventDefault();
+    carousel.scrollLeft = scrollLeft - delta * 1.5;
+  }
+});
+
+carousel.addEventListener('scroll', () => {
+  const cardW = carousel.querySelector('.proj-card').offsetWidth + 24;
+  const idx = Math.round(carousel.scrollLeft / cardW);
+  dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+});
+
+document.getElementById('carPrev').addEventListener('click', () => {
+  carousel.scrollBy({ left: -324, behavior: 'smooth' });
+});
+document.getElementById('carNext').addEventListener('click', () => {
+  carousel.scrollBy({ left: 324, behavior: 'smooth' });
+});
+dots.forEach((dot, i) => {
+  dot.addEventListener('click', () => {
+    const cardW = carousel.querySelector('.proj-card').offsetWidth + 24;
+    carousel.scrollTo({ left: i * cardW, behavior: 'smooth' });
+  });
+});
+
+// Touch support for carousel
+let touchStart = 0;
+carousel.addEventListener('touchstart', e => { touchStart = e.touches[0].clientX; });
+carousel.addEventListener('touchend', e => {
+  const diff = touchStart - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) carousel.scrollBy({ left: diff > 0 ? 324 : -324, behavior: 'smooth' });
+});
+
+// ========== MODAL ==========
+function openModal(idx) {
+  const p = projects[idx];
+  document.getElementById('modalTitle').textContent = p.title;
+  const thumb = document.getElementById('modalThumb');
+  thumb.innerHTML = `<img src="${p.thumb}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(20,184,166,0.05));display:flex;align-items:center;justify-content:center;font-size:60px;\\'>${p.fallback}</div>'">`;
+  document.getElementById('modalDesc').textContent = p.desc;
+  const pts = document.getElementById('modalPoints');
+  pts.innerHTML = p.points.map(pt => `<li>${pt}</li>`).join('');
+  const tags = document.getElementById('modalTags');
+  tags.innerHTML = p.tags.map(t => `<span class="tag">${t}</span>`).join('');
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
